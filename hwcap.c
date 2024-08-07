@@ -12,6 +12,7 @@ static const struct hwcap {
 
 	unsigned long	hwcap, hwcap2;
 } caps[] = {
+	/* AT_HWCAP */
 	"fp",         "",         "floating point",                                 HWCAP_FP, 0,
 	"asimd",      "",         "advanced SIMD",                                  HWCAP_ASIMD, 0,
 	"evtstrm",    "",         "generic timer configured to 10 kHz",             HWCAP_EVTSTRM, 0,
@@ -37,14 +38,15 @@ static const struct hwcap {
 	"sve",        "sve",      "scalable vector extensions",                     HWCAP_SVE; 0,
 	"asimdfhm",   "fp16fml",  "ASIMD half-precision multiply-accumulate",       HWCAP_ASIMDFHM, 0,
 	"dit",        "",         "data-independent timing",                        HWCAP_DIT, 0,
-	"uscat",      "",         "large system extensions 2 (unaligned single-copy atomicity), "HWCAP_USCAT, 0,
+	"uscat",      "",         "large system extensions 2 (unaligned single-copy atomicity)", HWCAP_USCAT, 0,
 	"ilrcpc",     "",         "load-acquire RCpc instructions 2",               HWCAP_ILRCPC, 0,
 	"flagm",      "flagm",    "flag manipulation",                              HWCAP_FLAGM, 0,
 	"ssbs",       "ssbs",     "speculative store bypass safe 2",                HWCAP_SSBS, 0,
-	"sb",         "",         "speculation barrier",                            HWCAP_SB, 0,
+	"sb",         "sb",       "speculation barrier",                            HWCAP_SB, 0,
 	"paca",       "pauth",    "pointer authentication (address)",               HWCAP_PACA, 0,
 	"pacg",       "pauth",    "pointer authentication (generic)",               HWCAP_PACG, 0,
 
+	/* AT_HWCAP2 */
 	"dcpodp",     "",          "data persistence writeback 2",                  0, HWCAP2_DCPODP,
         "sve2",       "sve2",      "scalable vector extensions 2",                  0, HWCAP2_SVE2,
 	"sveaes",     "sve2-aes",  "SVE advanced encryption standard",              0, HWCAP2_SVEAES,    
@@ -90,6 +92,45 @@ static const struct hwcap {
 	"sme_f16f16", "",          "SME accumulate FP16 into FP16",                 0, HWCAP2_SME_F16F16,
 	"mops",       "mops",      "memory copy and memory set",                    0, HWCAP2_MOPS,
 	"hbc",        "",          "branch consistently",                           0, HWCAP2_HBC,
+
+	/* architecture levels */
+	"armv8-a",     "",         "architecture level Armv8.0",
+	    HWCAP_FP|HWCAP_ASIMD, 0,
+	"armv8.1-a",   "armv8.1-a", "architecture level Armv8.1",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM, 0,
+	"armv8.2-a",   "armv8.2-a", "architecture level Armv8.2",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP, 0,
+	/* armv8.3 is armv8.2 plus pauth, but we don't detect pauth individually */
+	"armv8.4-a",   "armv8.4-a", "architecture level Armv8.4",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA, 0,
+	"armv8.5-a",   "armv8.5-a", "architecture level Armv8.5",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB, /* SPECRES? */
+            HWCAP2_BTI|HWCAP2_DCPODP,
+	"armv8.6-a",   "armv8.6-a", "architecture level Armv8.6",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB,
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV,
+	"armv8.7-a",   "armv8.7-a", "architecture level Armv8.7",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB,
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_WFXT,
+	"armv8.8-a",   "armv8.8-a", "architecture level Armv8.8",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB,
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_WFXT|
+	    HWCAP2_MOPS|HWCAP2_HBC,
+	"armv8.9-a",   "armv8.9-a", "architecture level Armv8.9",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB,
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_WFXT|
+	    HWCAP2_MOPS|HWCAP2_HBC|HWCAP2_CSSC,
 };
 
 
