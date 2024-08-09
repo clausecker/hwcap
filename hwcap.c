@@ -59,7 +59,7 @@ static const struct hwcap {
 	"svei8mm",    "i8mm",      "SVE int8 matrix multiplication",                0, HWCAP2_SVEI8MM,
 	"svef32mm",   "f32mm",     "SVE F32 matrix multiplication",                 0, HWCAP2_SVEF32MM,
 	"svef64mm",   "f64mm",     "SVE F64 matrix multiplication",                 0, HWCAP2_SVEF64MM,
-	"svebf16",    "bf16",      "SVE bfloat16 arithmetic",                       0, HWCAP2_BF16,
+	"svebf16",    "bf16",      "SVE bfloat16 arithmetic",                       0, HWCAP2_SVEBF16,
 	"i8mm",       "i8mm",      "int8 matrix multiplication",                    0, HWCAP2_I8MM,
 	"bf16",       "bf16",      "bfloat16 arithmetic",                           0, HWCAP2_BF16,
 	"dgh",        "",          "data gathering hint"                            0, HWCAP2_DGH,
@@ -94,7 +94,7 @@ static const struct hwcap {
 	"hbc",        "",          "branch consistently",                           0, HWCAP2_HBC,
 
 	/* architecture levels */
-	"armv8-a",     "",         "architecture level Armv8.0",
+	"armv8.0-a",     "",        "architecture level Armv8.0",
 	    HWCAP_FP|HWCAP_ASIMD, 0,
 	"armv8.1-a",   "armv8.1-a", "architecture level Armv8.1",
 	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM, 0,
@@ -131,6 +131,37 @@ static const struct hwcap {
 	    HWCAP_SB,
 	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_WFXT|
 	    HWCAP2_MOPS|HWCAP2_HBC|HWCAP2_CSSC,
+	"armv9.0-a",   "armv9-a", "architecture level Armv9.0",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB|HWCAP_SVE,
+            HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_SVE2,
+	"armv9.1-a",   "armv9.1-a", "architecture level Armv9.1",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB|HWCAP_SVE,
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_SVE2|
+	    HWCAP2_SVEBF16|HWCAP2_SVEI8MM,
+	"armv9.2-a",   "armv9.2-a", "architecture level Armv9.2",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB|HWCAP_SVE, /* LS64? */
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_WFXT|
+	    HWCAP2_ECV|HWCAP2_SVE2|HWCAP2_SVEBF16|HWCAP2_SVEI8MM,
+	"armv9.3-a",   "armv9.3-a", "architecture level Armv9.3",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB|HWCAP_SVE,
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_WFXT|
+	    HWCAP2_MOPS|HWCAP2_HBC|HWCAP2_SVE2|HWCAP2_SVEBF16|HWCAP2_SVEI8MM,
+	"armv9.4-a",   "armv9.4-a", "architecture level Armv9.4",
+	    HWCAP_FP|HWCAP_ASIMD|HWCAP_CRC32|HWCAP_ATOMICS|HWCAP_ASIMDRDM|HWCAP_DCPOP|
+	    HWCAP_FLAGM|HWCAP_ASIMDFHM|HWCAP_ASIMDDP|HWCAP_DIT|HWCAP_ILRCPC|HWCAP_USCA|
+	    HWCAP_SB|HWCAP_SVE,
+	    HWCAP2_BTI|HWCAP2_DCPODP|HWCAP2_I8MM|HWCAP2_BF16|HWCAP2_ECV|HWCAP2_WFXT|
+	    HWCAP2_MOPS|HWCAP2_HBC|HWCAP2_CSSC|HWCAP2_SVE2|HWCAP2_SVEBF16|HWCAP2_SVEI8MM|
+	    HWCAP2_SVE2P1,
+	NULL, NULL, NULL, 0, 0,
 };
 
 
