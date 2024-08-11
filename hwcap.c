@@ -257,8 +257,6 @@ get_archlevel(void) {
 		if (strncmp(supported_caps[i]->name, "armv", 4) == 0)
 			lvl = supported_caps[i];
 
-	assert(lvl != NULL);
-
 	return (lvl);
 }
 
@@ -266,10 +264,13 @@ static void
 print_cflags(void) {
 	const struct hwcap *lvl, *cap;
 	size_t i, j;
+	int have_lvl = 0, first = 1;
 
 	lvl = get_archlevel();
-
-	printf("-march=%s", lvl->cflag);
+	if (lvl != NULL) {
+		printf("-march=%s", lvl->cflag);
+		have_lvl = 1;
+	}
 
 	for (i = 0; i < ncaps; i++) {
 		cap = supported_caps[i];
@@ -278,7 +279,7 @@ print_cflags(void) {
 			continue;
 
 		/* don't print subsumed capabilities */
-		if ((lvl->hwcap & cap->hwcap) == cap->hwcap
+		if (have_lvl && (lvl->hwcap & cap->hwcap) == cap->hwcap
 		    && (lvl->hwcap2 & cap->hwcap2) == cap->hwcap2)
 			continue;
 
@@ -291,7 +292,12 @@ print_cflags(void) {
 			if (strcmp(cap->cflag, supported_caps[j]->cflag) == 0)
 				goto skip_this_capability;
 
-		printf("+%s", cap->cflag);
+		if (have_lvl)
+			printf("+%s", cap->cflag);
+		else
+			printf("%s-m%s", first ? "" : " ", cap->cflag);
+
+		first = 0;
 
 	skip_this_capability:
 		;
@@ -302,7 +308,11 @@ print_cflags(void) {
 
 static void
 print_archlevel(void) {
-	puts(get_archlevel()->name);
+	const struct hwcap *lvl;
+
+	lvl = get_archlevel();
+	if (lvl != NULL)
+		puts(get_archlevel()->name);
 }
 
 static int
