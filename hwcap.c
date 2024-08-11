@@ -15,21 +15,40 @@ static char **wanted_caps;
 const struct cap *supported_caps[MAXCAPS];
 size_t ncaps = 0;
 
+static int
+want_cap(const char *name)
+{
+	size_t i;
+
+	if (wanted_caps == NULL)
+		return (1);
+
+	for (i = 0; wanted_caps[i] != NULL; i++)
+		if (strcmp(name, wanted_caps[i]) == 0)
+			return (1);
+
+	return (0);
+}
+
+const struct cap *
+have_cap(const char *name)
+{
+	size_t i;
+
+	for (i = 0; i < ncaps; i++)
+		if (strcmp(name, supported_caps[i]->name) == 0)
+			return (supported_caps[i]);
+
+	return (NULL);
+}
+
 void
 register_cap(const struct cap *cap)
 {
-	if (wanted_caps != NULL) {
-		size_t i;
-
-		for (i = 0; wanted_caps[i] != NULL; i++)
-			if (strcmp(cap->name, wanted_caps[i]) == 0)
-				goto found;
-
-		/* cap not found in wanted_caps */
+	if (!want_cap(cap->name))
 		return;
-	}
 
-found:	if (ncaps >= MAXCAPS)
+	if (ncaps >= MAXCAPS)
 		errx(EX_SOFTWARE, "too many capabilities");
 
 	supported_caps[ncaps++] = cap;

@@ -4,6 +4,7 @@ struct cap {
 
 /* provided by hwcap.c */
 void	register_cap(const struct cap *);
+const struct cap	*have_cap(const char *);
 
 #define MAXCAPS 100
 extern	const struct cap 	*supported_caps[MAXCAPS];
