@@ -101,6 +101,7 @@ get_archlevel(void)
 		fputc('e', isastr);
 	else {
 		warnx("cannot determine ISA string: neither flags e nor i present");
+		fclose(isastr);
 
 		return (NULL);
 	}
