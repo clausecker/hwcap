@@ -1,0 +1,103 @@
+.Dd August 11, 2024
+.Dt HWCAP 1
+.Os
+.Sh NAME
+.Nm hwcap
+.Nd query hardware capabilities
+.Sh SYNOPSIS
+.Nm hwcap
+.Op Fl cflqv
+.Op Fl ahimt
+.Op Ar capability ...
+.Nm hwcap
+.Op Fl cflqv
+.Fl I
+.Ar isa-string
+.Op Ar capability ...
+.Sh DESCRIPTION
+The
+.Nm
+utility queries the capabilities of the hardware it runs on.
+Capabilities are sourced from a user-defined capability source.
+If any capabilities are listed as arguments,
+the set of capabilities is filtered to only those requested.
+The requested capabilities are then returned in a user-defined
+format.
+.Pp
+The following options control capability source; the default
+capability source is architecture-dependent:
+.Bl -tag -width Ds
+.It Fl a
+All capabilities known are listed.
+This is never the default capability source.
+This can be used to translate the capabilities given as arguments to
+.Nm
+some other format.
+.It Fl h
+Capabilities are sourced
+from the
+.Dv AT_HWCAP
+and
+.Dv AT_HWCAP
+elf auxiliary vectors as given by
+.Xr elf_aux_info 3 .
+.It Fl i
+On
+.Cm riscv64 ,
+the RISC-V ISA string is used to determine capabilities.
+.It Fl I Ar isa-string
+Like
+.Fl i ,
+but the given
+.Ar isa-string
+is used.
+.It Fl m
+Hardware-specific capability-identification registers are
+used to determine capabilities.
+.It Fl t
+Capabilities are determined by trial of affected instructions.
+.El
+.Pp
+The following options control the output format:
+.Bl -tag -width Ds
+.It Fl c
+Print a list of options for
+.Xr cc 1
+or
+.Xr c++ 1
+to enable the generation of instructions corresponding to all
+requested capabilities.
+.It Fl f
+Capabilities are printed as flags, intended to match the
+flags listed in
+.Pa /proc/cpuinfo
+on Linux\(rg systems.
+This is the default output format.
+.It Fl l
+Print the highest supported architecture level.
+.It Fl q
+Query support of capabilities and return a zero (true) exit status
+if and only if all capabilities requested are supported by the
+capability source.
+No output is produced.
+.It Fl v
+Print flags with a brief description of their meaning.
+.El
+.Sh EXIT STATUS
+The
+.Nm
+utility exits 0 on success or if all requested capabilies were detected.
+If no error occured but some requested capabilities were not detected,
+the utility exits 1.
+On error, an exit status of >63 is returned.
+.Sh CAVEATS
+The set of detected capabilities may vary depending on capability source
+as not all capability sources can supply information about all capabilities.
+.Sh SEE ALSO
+.Xr arch 7 ,
+.Xr elf_aux_info 3 ,
+.Xr linprocfs 5 ,
+.Xr simd 7 ,
+.Xr uname 1 .
+.Sh AUTHOR
+.An Robert Clausecker Aq Mt fuz@FreeBSD.org
