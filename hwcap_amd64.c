@@ -9,6 +9,7 @@ static const struct hwcap {
 	unsigned int reg;
 	unsigned int bits;
 } caps[] = {
+	/* leaf 1, edx */
 	"fpu", "", "x87 floating point unit", 0, CPUID_FPU,
 	"vme", "", "virtual 8086 mode enhancements", 0, CPUID_VME,
 	"de", "", "debugging extensions", 0, CPUID_DE,
@@ -42,6 +43,7 @@ static const struct hwcap {
 	"ia64", "", "IA-64 (Itanium) processor", 0, CPUID_IA64,
 	"pbe", "", "pending break enable", 0, CPUID_PBE,
 
+	/* leaf 1, ecx */
 	"pni", "", "streaming SIMD extensions 3", 1, CPUID2_SSE3,
 	"pclmulqdq", "", "carryless multiply quadword", 1, CPUID2_PCLMULQDQ,
 	"dtes64", "", "64-bit debug store area", 1, CPUID2_DTES64,
@@ -74,12 +76,73 @@ static const struct hwcap {
 	"rdrand", "", "read random instruction", 1, CPUID2_RDRAND,
 	"hv", "", "running on a hypervisor", 1, CPUID2_HV,
 
+	/* leaf 7:0, ebx */
+	"fsgsbase", "", "read/write fs/gs base address", 2, CPUID_STDEXT_FSGSBASE,
+	"tsc_adjust", "", "TSC adjustment MSR", 2, CPUID_STDEXT_TSC_ADJUST,
+	"sgx", "", "software guard extensions", 2, CPUID_STDEXT_SGX,
+	"bmi1", "", "bit manipulation instructions 1", 2, CPUID_STDEXT_BMI1,
+	"hle", "", "hardware lock elision", 2, CPUID_STDEXT_HLE,
+	"avx2", "", "advanced vector extensions 2", 2, CPUID_STDEXT_AVX2,
+/*	"???", "", "FPU data pointer updated on x87 exceptions only", 2, CPUID_STDEXT_FDP_EXC, */
+	"smep", "", "supervisor mode execution prevention", 2, CPUID_STDEXT_SMEP,
+	"bmi2", "", "bit manipulation instructions 2", 2, CPUID_STDEXT_BMI2,
+	"erms", "", "enhanced rep movsb/stosb instructions", 2, CPUID_STDEXT_ERMS,
+	"invpcid", "", "invalidate processor context ID", 2, CPUID_STDEXT_INVPCID,
+	"rtm", "", "restricted transactional memory", 2, CPUID_STDEXT_RTM,
+	"cqm", "", "resource director technology monitoring", 2, CPUID_STDEXT_PQM,
+/*	"???", "", "FPU CS/DS values deprecated", 2, CPUID_STDEXT_NFPUSG, */
+	"mpx", "", "memory protections extension", 2, CPUID_STDEXT_MPX,
+	"rdt_a", "", "resource director technology allocation", 2, CPUID_STDEXT_PQE,
+	"avx512f", "", "AVX-512 foundation", 2, CPUID_STDEXT_AVX512F,
+	"avx512dq", "", "AVX-512 double and quadword", 2, CPUID_STDEXT_AVX512DQ,
+	"rdseed", "", "random seed instruction", 2, CPUID_STDEXT_RDSEED,
+	"adx", "", "add with carry through CF/OF instructions", 2, CPUID_STDEXT_ADX,
+	"smap", "", "supervisor mode access prevention", 2, CPUID_STDEXT_SMAP,
+	"avx512ifma", "", "AVX-512 integer fused multiply-add", 2, CPUID_STDEXT_AVX512IFMA,
+	"clflushopt", "", "flush cacheline optimized", 2, CPUID_STDEXT_CLFLUSHOPT,
+	"clwb", "", "cache line writeback", 2, CPUID_STDEXT_CLWB,
+	"intel_pt", "", "intel processor trace", 2, CPUID_STDEXT_PROCTRACE,
+	"avx512pf", "", "AVX-512 prefetch", 2, CPUID_STDEXT_AVX512PF,
+	"avx512er", "", "AVX-512 exponential and reciprocal", 2, CPUID_STDEXT_AVX512ER,
+	"avx512cd", "", "AVX-512 conflict detection", 2, CPUID_STDEXT_AVX512CD,
+	"sha_ni", "", "secure hashing algorithm extensions", 2, CPUID_STDEXT_SHA,
+	"avx512bw", "", "AVX-512 byte and word", 2, CPUID_STDEXT_AVX512BW,
+	"avx512vl", "", "AVX-512 vector length extensions", 2, CPUID_STDEXT_AVX512VL,
+
+	/* leaf 7:0, ecx */
+/*	"???", "", "prefetch for writing with T1 hint", 3, CPUID_STDEXT2_PREFETCHWT1, */
+	"avx512vbmi", "", "AVX-512 vector bit manipulation", 3, CPUID_STDEXT2_AVX512VBMI,
+	"umip", "", "user-mode instruction prevention", 3, CPUID_STDEXT2_UMIP,
+	"pku", "", "protection keys for user-mode pages", 3, CPUID_STDEXT2_PKU,
+	"ospke", "", "protection keys enabled by OS", 3, CPUID_STDEXT2_OSPKE,
+	"waitpkg", "", "umonitor/umwait/tpause instructions", 3, CPUID_STDEXT2_WAITPKG,
+	"avx512_vbmi2", "", "AVX-512 vector bit manipulation 2", 3, CPUID_STDEXT2_AVX512VBMI2,
+/*	"???", "", "shadow stack", 3, 0x00000080, */
+	"gfni", "", "galois field new instructions", 3, CPUID_STDEXT2_GFNI,
+	"vaes", "", "vector AES", 3, CPUID_STDEXT2_VAES,
+	"vpclmulqdq", "", "vector carryless multiply quadword", 3, CPUID_STDEXT2_VPCLMULQDQ,
+	"avx512_vnni", "", "AVX-512 vector neural network instructions", 3, CPUID_STDEXT2_AVX512VNNI,
+	"avx512_bitalg", "", "AVX-512 bit algorithms", 3, CPUID_STDEXT2_AVX512BITALG,
+	"tme", "", "total memory encryption", 3, CPUID_STDEXT2_TME,
+	"avx512_vpopcntdq", "", "vector population count", 3, CPUID_STDEXT2_AVX512VPOPCNTDQ,
+	"la57", "", "5-level page tables", 3, CPUID_STDEXT2_LA57,
+	"rdpid", "", "read processor ID", 3, CPUID_STDEXT2_RDPID,
+	"bus_lock_detect", "", "bus lock detect", 3, 0x01000000, /* TODO: add symbolic name */
+	"cldemote", "", "cache line demote", 3, CPUID_STDEXT2_CLDEMOTE,
+	"movdiri", "", "move doubleword as direct store", 3, CPUID_STDEXT2_MOVDIRI,
+	"movdir64b", "", "move 64 bytes as direct store", 3, CPUID_STDEXT2_MOVDIR64B,
+	"enqcmd", "", "enqueue command", 3, CPUID_STDEXT2_ENQCMD,
+	"sgx_lc", "", "software guard extensions launch control", 3, CPUID_STDEXT2_SGXLC,
+
 	NULL, NULL, NULL, 0, 0,
 };
 
 /*
- *  0 -- leaf 0, edx
- *  1 -- leaf 0, ecx
+ *  0 -- leaf 0x00000001, edx
+ *  1 -- leaf 0x00000001, ecx
+ *  2 -- leaf 0x00000007:0, ebx
+ *  3 -- leaf 0x00000007:0, ecx
+ *  4 -- leaf 0x00000007:0, edx
  */
 static unsigned int cpuid_bits[2];
 
@@ -89,6 +152,26 @@ cpuid(unsigned leaf, unsigned *eax, unsigned *ebx, unsigned *ecx, unsigned *edx)
 	unsigned a, b, c, d;
 
 	asm ("cpuid" : "=a"(a), "=b"(b), "=c"(c), "=d"(d) : "0"(leaf));
+
+	if (eax != NULL)
+		*eax = a;
+
+	if (ebx != NULL)
+		*ebx = b;
+
+	if (ecx != NULL)
+		*ecx = c;
+
+	if (edx != NULL)
+		*edx = d;
+}
+
+static inline void
+cpuidx(unsigned leaf, unsigned sub, unsigned *eax, unsigned *ebx, unsigned *ecx, unsigned *edx)
+{
+	unsigned a, b, c, d;
+
+	asm ("cpuid" : "=a"(a), "=b"(b), "=c"(c), "=d"(d) : "0"(leaf), "2"(sub));
 
 	if (eax != NULL)
 		*eax = a;
@@ -116,6 +199,11 @@ populate_cpuid_bits(void) {
 		return;
 
 	cpuid(1, NULL, NULL, cpuid_bits + 1, cpuid_bits + 0);
+
+	if (max_leaf < 7)
+		return;
+
+	cpuidx(7, 0, NULL, cpuid_bits + 2, cpuid_bits + 3, cpuid_bits + 4);
 }
 
 void
