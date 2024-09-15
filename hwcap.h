@@ -6,7 +6,7 @@ struct cap {
 void	register_cap(const struct cap *);
 const struct cap	*have_cap(const char *);
 
-#define MAXCAPS 100
+#define MAXCAPS 1000
 extern	const struct cap 	*supported_caps[MAXCAPS];
 extern	size_t			 ncaps;
 
