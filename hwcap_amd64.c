@@ -134,6 +134,32 @@ static const struct hwcap {
 	"enqcmd", "", "enqueue command", 3, CPUID_STDEXT2_ENQCMD,
 	"sgx_lc", "", "software guard extensions launch control", 3, CPUID_STDEXT2_SGXLC,
 
+	/* leaf 7:0, edx */
+	"avx512_4vnniw", "", "AVX-512 vector neuronal network instructions word variable precision", 4, CPUID_STDEXT3_AVX5124VNNIW,
+	"avx512_4fmaps", "", "AVX-512 fused multiply accumulate packed single precision", 4, CPUID_STDEXT3_AVX5124FMAPS,
+	"fsrm", "", "fast short rep movsb", 4, CPUID_STDEXT3_FSRM,
+	"avx512_vp2intersect", "", "AVX-512 vector pair intersection to a pair of mask registers", 4, CPUID_STDEXT3_AVX512VP2INTERSECT,
+	"srbds_ctrl", "", "SRBDS mitigation MSR available", 4, CPUID_STDEXT3_MCUOPT,
+	"md_clear", "", "verw clears microarchitectural buffers", 4, CPUID_STDEXT3_MD_CLEAR,
+	"rtm_always_abort", "", "RTM transactions always abort", 4, 0x00000800,
+	"tsx_force_abort", "", "TSX_FORCE_ABORT MSR available", 4, CPUID_STDEXT3_TSXFA,
+	"serialize", "", "the serialize instruction", 4, 0x00004000,
+	"hybrid_cpu", "", "multiple types of CPU cores installed", 4, 0x00008000,
+	"tsxldtrk", "", "TSX suspend load address tracking", 4, 0x00010000,
+	"pconfig", "", "platform configuration instruction", 4, CPUID_STDEXT3_PCONFIG,
+	"arch_lbr", "", "architectural last branch record", 4, 0x00080000,
+	"ibt", "", "indirect branch tracking", 4, 0x00100000,
+	"amx_bf16", "", "AMX bfloat16 instructions", 4, 0x00400000,
+	"avx512_fp16", "", "AVX-512 binary16 instructions", 4, 0x00800000,
+	"amx_tile", "", "AMX tile support", 4, 0x01000000,
+	"amx_int8", "", "AMX int8 instructions", 4, 0x02000000,
+	"spec_ctrl", "", "indirect branch prediction barrier / indirect branch restricted speculation", 4, CPUID_STDEXT3_IBPB,
+	"intel_stibp", "", "single thread indirect branch predictors", 4, CPUID_STDEXT3_STIBP,
+	"flush_l1d", "", "IA32_FLUSH_CMD MSR available", 4, CPUID_STDEXT3_L1D_FLUSH,
+	"arch_capabilities", "", "IA32_ARCH_CAPABILITIES MSR available", 4, CPUID_STDEXT3_ARCH_CAP,
+	"core_capabilities", "", "IA32_CORE_CAPABILITIES MSR available", 4, CPUID_STDEXT3_CORE_CAP,
+	"spec_ctrl_ssbd", "", "speculative store bypass disable", 4, CPUID_STDEXT3_SSBD,
+
 	NULL, NULL, NULL, 0, 0,
 };
 
